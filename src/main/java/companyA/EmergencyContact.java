@@ -1,69 +1,77 @@
 package companyA;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * Created by evanpthompson on 11/1/2016.
+ */
+
+@XmlRootElement( name = "emergencyContact")
 public class EmergencyContact {
 
-
-	private String name;
+	private String contactName;
 	private String relation;
-	private String phoneNumber;
-	private String emailAddress;
-	
-	public EmergencyContact(String name, String relation, String phoneNumber) {
-		this.name = name;
+	private String emergencyPhoneNumber;
+
+	public EmergencyContact() {  }
+
+	public EmergencyContact(String contactName, String relation, String emergencyPhoneNumber) {
+		this.contactName = contactName;
 		this.relation = relation;
-		this.phoneNumber = phoneNumber;
-	}
-	
-	public EmergencyContact(String name, String relation, String phoneNumber, String emailAddress) {
-		this.name = name;
-		this.relation = relation;
-		this.phoneNumber = phoneNumber;
-		this.emailAddress = emailAddress;
+		this.emergencyPhoneNumber = emergencyPhoneNumber;
 	}
 
-	public String getName() {
-		return name;
+	@XmlElement
+	public String getContactName() {
+		return contactName;
 	}
 
+	public void setContactName(String contactName) {
+		this.contactName = contactName;
+	}
+
+	@XmlElement
 	public String getRelation() {
 		return relation;
 	}
 
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-	public String getEmailAddress() {
-		return emailAddress;
-	}
-
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
-
-	private void setName(String name) {
-		this.name = name;
-	}
-
-	private void setRelationship(String relation) {
+	public void setRelation(String relation) {
 		this.relation = relation;
 	}
 
-	private void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
+	@XmlElement
+	public String getEmergencyPhoneNumber() {
+		return emergencyPhoneNumber;
 	}
-	
-	
-	public String toString() {
-		String contact = "";
-		if (!(emailAddress.isEmpty())) {
-			contact += emailAddress + " ";
+
+	public void setEmergencyPhoneNumber(String emergencyPhoneNumber) {
+		this.emergencyPhoneNumber = emergencyPhoneNumber;
+	}
+
+
+	/* Utility method will accept emergencyContact as string along with a delimiter and populate an EmergencyContact accordingly.
+    buildEmergencyContact("This Contact Name;Relationship;Contact Phone number", ";");
+     */
+	public EmergencyContact buildEmergencyContact(String emergencyContact, String delimiter) {
+		String[] parts = emergencyContact.split(delimiter);
+		EmergencyContact ec = new EmergencyContact();
+		if (parts.length == 3) {
+			ec.setContactName(parts[0]);
+			ec.setRelation(parts[1]);
+			ec.setEmergencyPhoneNumber(parts[2]);
 		}
-		
-		contact += phoneNumber;
-		
-		return String.format("name: %s relation: %s  contact info: %s", name, relation, contact);
+		return ec;
 	}
-	
-	
+
+
+	@Override
+	public String toString() {
+		return "{ " +
+				"contactName : " + contactName +
+				", relation : " + relation +
+				", emergencyPhoneNumber : " + emergencyPhoneNumber +
+				" }";
+
+	}
 }
