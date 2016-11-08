@@ -1,79 +1,90 @@
 package companyA;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+/**
+ * Created by evanpthompson on 11/1/2016.
+ */
+
+@XmlRootElement(name = "postalAddress")
 public class PostalAddress {
 
-	private String streetFirst;
-	private String streetSecond;
+	private String street;
 	private String city;
 	private String state;
 	private String zip;
-	
-	public PostalAddress(String streetFirst, String city, String state, String zip) {
-		this.streetFirst = streetFirst;
-		this.city = city;
-		this.state = state;
-		this.zip = zip;
-	}
-	
-	public PostalAddress(String streetFirst, String streetSecond, String city, String state, String zip) {
-		this.streetFirst = streetFirst;
-		this.streetSecond = streetSecond;
+
+	/*  No-args constructor  */
+	public PostalAddress() { }
+
+	public PostalAddress(String street, String city, String state, String zip) {
+		this.street = street;
 		this.city = city;
 		this.state = state;
 		this.zip = zip;
 	}
 
-	public String getStreetFirst() {
-		return streetFirst;
+	@XmlElement
+	public String getStreet() {
+		return street;
 	}
 
-	public String getStreetSecond() {
-		return streetSecond;
+	public void setStreet(String street) {
+		this.street = street;
 	}
 
+	@XmlElement
 	public String getCity() {
 		return city;
 	}
 
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	@XmlElement
 	public String getState() {
 		return state;
 	}
 
+	public void setState(String state) {
+		this.state = state;
+	}
+
+	@XmlElement
 	public String getZip() {
 		return zip;
 	}
 
-	private void setStreetFirst(String streetFirst) {
-		this.streetFirst = streetFirst;
-	}
-
-	private void setStreetSecond(String streetSecond) {
-		this.streetSecond = streetSecond;
-	}
-
-	private void setCity(String city) {
-		this.city = city;
-	}
-
-	private void setState(String state) {
-		this.state = state;
-	}
-
-	private void setZip(String zip) {
+	public void setZip(String zip) {
 		this.zip = zip;
 	}
 
-	
-	
-	@Override
-	public String toString() {
-		
-		String address = "address: " + streetFirst + " ";
-		
-		if (!(streetSecond.isEmpty())) {
-			address += streetSecond + " ";
+
+	/* Utility method will accept postalAddress as string along with a delimiter and populate a PostalAddress accordingly.
+    buildPostalAddress("123 Street Name;City Name;State Name;Zip Code", ";");
+     */
+	public PostalAddress buildPostalAddress(String postalAddress, String delimiter) {
+		String[] parts = postalAddress.split(delimiter);
+		PostalAddress pa = new PostalAddress();
+		if (parts.length == 4) {
+			pa.setStreet(parts[0]);
+			pa.setCity(parts[1]);
+			pa.setState(parts[2]);
+			pa.setZip(parts[3]);
 		}
-		return String.format("%s \ncity: %s state: %s zip code: %s", address, city, state, zip);
+		return pa;
 	}
 
+	@Override
+	public String toString() {
+		return "{ " +
+				"street : " + street +
+				", city : " + city +
+				", state : " + state +
+				", zip : " + zip +
+				" }";
+
+	}
 }
