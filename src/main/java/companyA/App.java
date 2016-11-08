@@ -1,29 +1,19 @@
 package companyA;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import org.bson.Document;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.MongoDatabase;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import org.bson.Document;
-import org.bson.conversions.Bson;
-import static com.mongodb.client.model.Filters.eq;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Projections;
-import companyA.MongoConnector;
-import companyA.Employee;
-import companyA.PostalAddress;
-import companyA.User;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Scanner;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class App {
 	
@@ -147,15 +137,16 @@ public class App {
 			System.out.println("First name: " +row.get(dataOrder[0]));
 			
 			Employee emp = new Employee();
-			emp.setActive(true);
+			emp.setActiveEmployee(true);
 			//Employee(, row.get(dataOrder[1]), row.get(dataOrder[2]), row.get(dataOrder[3]), row.get(dataOrder[4]), new PostalAddress(row.get(dataOrder[5])), row.get(dataOrder[6]), row.get(dataOrder[7]))
 			
 //NOTE: all rows are correct, same as hm2 above
 			emp.setFirstName(row.get(dataOrder[0]));
 			emp.setMiddleName(row.get(dataOrder[1]));
 			emp.setLastName(row.get(dataOrder[2]));
-			emp.setSocialSecurityNumber(Integer.parseInt(row.get(dataOrder[3])));
-			emp.setDateOfBirth(row.get(dataOrder[4]));
+			emp.setGivenName(row.get(dataOrder[0]) + row.get(dataOrder[1]) + row.get(dataOrder[2]));
+			emp.setSocialSecurityNumber(row.get(dataOrder[3]));
+			emp.setDob(row.get(dataOrder[4]));
 			//emp.setPostalAddress(new PostalAddress(row.get(dataOrder[5])));
 			emp.setPhoneNumber(row.get(dataOrder[6]));
 			
@@ -168,7 +159,7 @@ public class App {
 	{
 		//the StringIndexOutOfBoundsException is because line 64 first name Ken Marc App is not a long enough name
 		
-		for (int i = 0; i < mmO.getEmployeeList().size();i++) {
+		for (int i = 0; i < mmO.getEmployeeList().size()-1;i++) {
 			System.out.println("Output:" +i);
 			ObjectMapper mapper = new ObjectMapper();
 			String employeeString;
@@ -176,7 +167,7 @@ public class App {
 			
 			try {
 				
-				User user = getUser(mmO.getEmployeeList().get(i).fullNameAsString());
+				User user = getUser(mmO.getEmployeeList().get(i).getGivenName());
 				employeeString = mapper.writeValueAsString(mmO.getEmployeeList().get(i));
 				System.out.println("employee string: " +employeeString);
 				
